@@ -6,7 +6,7 @@
 /*   By: jvalenci <jvalenci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 09:19:07 by jvalenci          #+#    #+#             */
-/*   Updated: 2022/03/02 14:29:23 by jvalenci         ###   ########.fr       */
+/*   Updated: 2022/03/03 13:07:50 by jvalenci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	main(void)
 	int		y_end = 500;
 	int		x_start = 0;
 	int		y_start = 0;
-	t_data	img;
 
 	mlx = mlx_init();
 	mlx_win = mlx_new_window(mlx, x_end, y_end, "Hello world!");
