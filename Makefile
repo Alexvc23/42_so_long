@@ -19,14 +19,12 @@ FLAGS		:= -Wall -Werror -Wextra
 DIR_OBJS	:= objs
 DIR_INCS	:= includes
 DIR_LIBFT	:= libft
-DIR_PRINTF	:= ft_printf
 DIR_GNL		:= gnl
 FILE_INCS	:= so_long.h
 SRCS = $(addprefix $(DIR_SRCS)/,$(C_FILES))
 OBJS = $(addprefix $(DIR_OBJS)/,$(O_FILES))
 INCS = $(addprefix $(DIR_INCS)/,$(FILE_INCS))
 LIBFT := $(DIR_LIBFT)/libft.a
-PRINTF := $(DIR_PRINTF)/ft_printf.a
 GNL	:= $(DIR_GNL)/gnl.a
 O_FILES = $(C_FILES:.c=.o)
 C_FILES	:= so_long.c parsing.c error.c game.c \
@@ -51,7 +49,7 @@ END		=	\033[0m
 	
 all: $(EXEC) 
 
-$(EXEC): $(LIBFT) $(GNL) $(PRINTF) $(OBJS) $(INCS)
+$(EXEC): $(LIBFT) $(GNL) $(OBJS) $(INCS)
 	$(AT) $(CC)  $(OBJS) $(LIBFT) $(PRINTF) $(GNL) $< -o $(EXEC) $(EXEC_FLAGS) 
 	@printf "$(ERASE)$(ERASE)$(BLUE)> Creating:$(BOLD)$(CYAN) $@ $(END)\n"
 
@@ -75,17 +73,15 @@ clean:
 	@echo Removing object files
 	$(AT) $(MAKE) -C $(DIR_LIBFT) clean
 	$(AT) $(MAKE) -C $(DIR_GNL) clean
-	$(AT) $(MAKE) -C $(DIR_PRINTF) clean
 	$(AT)-rm -rf $(DIR_OBJS)	 
 fclean: clean
 	@echo Removing application
 	$(AT)-rm -f $(EXEC)
 	$(AT) $(MAKE) -C $(DIR_LIBFT) fclean
 	$(AT) $(MAKE) -C $(DIR_GNL) fclean
-	$(AT) $(MAKE) -C $(DIR_PRINTF) fclean
 	@printf "$(ERASE)$(ERASE)$(BLUE)> Deleted : $(RED)$(EXEC)$(END)\n"
 
 re: fclean all	
 
-.PHONY: all clean fclean ft_printf
+.PHONY: all clean fclean
 .DEFAULT: all

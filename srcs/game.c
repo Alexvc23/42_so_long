@@ -6,7 +6,7 @@
 /*   By: jvalenci <jvalenci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 11:01:37 by jvalenci          #+#    #+#             */
-/*   Updated: 2022/03/11 12:36:24 by jvalenci         ###   ########.fr       */
+/*   Updated: 2022/03/11 18:25:34 by jvalenci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,18 @@ void	ft_check_exit(t_vars *map, char action)
 	char right = map->map[map->y_p][map->x_p + 1];
 	char left = map->map[map->y_p][map->x_p - 1];
 
-	if (action == 'U' && up == 'E' && map->n_collectables == 0)
-		ft_close_window(map);
-	else if (action == 'D' && down == 'E' && map->n_collectables == 0)
-		ft_close_window(map);
-	else if (action == 'R' && right == 'E' && map->n_collectables == 0)
-		ft_close_window(map);
-	else if (action == 'L' && left == 'E' && map->n_collectables == 0)
-		ft_close_window(map);
-	if (action == 'U' && up == 'E' && map->n_collectables > 0)
+	if ((action == 'U' && up == 'E' && map->n_collectables == 0) || \
+	(action == 'D' && down == 'E' && map->n_collectables == 0) || \
+	(action == 'R' && right == 'E' && map->n_collectables == 0) || \
+	(action == 'L' && left == 'E' && map->n_collectables == 0))
+		ft_close_window(map, 1);
+	if ((action == 'U' && up == 'E' && map->n_collectables > 0) || \
+	(action == 'D' && down == 'E' && map->n_collectables > 0) || \
+	(action == 'R' && right == 'E' && map->n_collectables > 0) || \
+	(action == 'L' && left == 'E' && map->n_collectables > 0))
 		ft_print_error(7);
-	else if (action == 'D' && down == 'E' && map->n_collectables > 0)
-		ft_print_error(7);
-	else if (action == 'R' && right == 'E' && map->n_collectables > 0)
-		ft_print_error(7);
-	else if (action == 'L' && left == 'E' && map->n_collectables > 0)
-		ft_print_error(7);
+	if ((up != 'E') && (down != 'E') && (right != 'E') && (left != 'E'))
+		map->mouv++;
 }
 
 /*	Execute the player movements along with the function ft_move_p
@@ -89,7 +85,6 @@ void	ft_exe_move(t_vars *map, char action)
 		map->map[map->y_p][map->x_p - 1] = 'P';
 		map->map[map->y_p][map->x_p] = '0';
 	}
-	map->mouv++;
 	ft_check_char(map);
 	ft_check_exit(map, action);
 }
@@ -97,27 +92,24 @@ void	ft_exe_move(t_vars *map, char action)
 /*	Execute the player movements and refresh 'P' coordinates */
 void	ft_move_p(t_vars *map, int key)
 {
+	ft_get_p(map);
 	if ((key == K_W) || (key == K_UP))
 	{
-		ft_get_p(map);
 		if (map->map[map->y_p - 1][map->x_p] != '1')
 			ft_exe_move(map, 'U');
 	}
 	else if (key == K_S || key == K_DOWN)
 	{
-		ft_get_p(map);
 		if (map->map[map->y_p + 1][map->x_p] != '1')
 			ft_exe_move(map, 'D');
 	}
 	else if (key == K_D || key == K_RIGHT)
 	{
-		ft_get_p(map);
 		if (map->map[map->y_p][map->x_p + 1] != '1')
 			ft_exe_move(map, 'R');
 	}
 	else if (key == K_A || key == K_LEFT)
 	{
-		ft_get_p(map);
 		if (map->map[map->y_p][map->x_p - 1] != '1')
 			ft_exe_move(map, 'L');
 	}
@@ -134,10 +126,12 @@ int ft_events(int key, t_vars *vars)
 	|| key == K_DOWN || key == K_LEFT || key == K_RIGHT)
 	{
 		ft_move_p(vars, key);
-		printf("movements: %d\n", vars->mouv);
+		ft_putstr_fd("movements: ", 1);
+		ft_putnbr_fd(vars->mouv, 1);
+		ft_putstr_fd("\n", 1);
 	}
 	if (key == K_ESC)
-		ft_close_window(vars);
+		ft_close_window(vars, 0);
 	ft_push_img(vars);
 	return (0);
 }

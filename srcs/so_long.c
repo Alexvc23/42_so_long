@@ -6,14 +6,14 @@
 /*   By: jvalenci <jvalenci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 10:09:38 by jvalenci          #+#    #+#             */
-/*   Updated: 2022/03/11 12:08:00 by jvalenci         ###   ########.fr       */
+/*   Updated: 2022/03/11 17:54:11 by jvalenci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"so_long.h"
 
 /* clear up and destroy current window */
-int	ft_close_window(t_vars *mlx)
+int	ft_close_window(t_vars *mlx, int winner)
 {
     int i;
 
@@ -28,9 +28,11 @@ int	ft_close_window(t_vars *mlx)
         i++;
     }
     mlx->mlx = NULL;
-    mlx->win = NULL; 
- 	exit(mlx->loop);
-	return (1);
+    mlx->win = NULL;
+    if (winner == 1)
+        ft_putstr_fd("You have won\n", 1);
+    exit(mlx->loop);
+    return (1);
 }
 
 /*  set up all the needed pointers, mlx API, pointers to images,

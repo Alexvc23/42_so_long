@@ -6,7 +6,7 @@
 /*   By: jvalenci <jvalenci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 10:49:28 by jvalenci          #+#    #+#             */
-/*   Updated: 2022/03/11 12:08:24 by jvalenci         ###   ########.fr       */
+/*   Updated: 2022/03/11 17:51:14 by jvalenci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int     ft_check_char(t_vars *map);
 int     ft_check_errors(t_vars *map);
 int     ft_print_error(int error);
 int     ft_check_walls(t_vars *map);
-int     ft_close_window(t_vars *mlx);
+int	    ft_close_window(t_vars *mlx, int winner);
 void    ft_set_window(t_vars *mlx);
 void    ft_push_img(t_vars *mlx);
 int     ft_events(int key, t_vars *vars);
