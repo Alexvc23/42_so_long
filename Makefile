@@ -6,27 +6,33 @@
 #  |_| |_| |_|\__,_|_|\_\___| |_| |_|_|\___| |___/\___/___|_|\___/|_| |_|\__, |
 #                                                    |_____|             |___/
 
-
+# ─── VARIABLES ──────────────────────────────────────────────────────────────────
+	
 V_CC := @echo "Building $@..."; $(CC)
 AT := @
 CC := gcc
-EXEC	:= so_long
-DIR_SRCS := srcs
-FLAGS	:= -Wall -Werror -Wextra
-MLX_FLAGS := -framework OpenGL -framework AppKit 
-DIR_OBJS := objs
-DIR_INCS := includes 
-DIR_MLX  := mlx 
-DIR_LIBFT:= libft
+EXEC		:= so_long
+EXEC_FLAGS	:= -Llinux_mlx/ -lmlx -L/usr/include/ -L/usr/lib  -lXext -lX11 -lm -lbsd
+OBJS_FLAGS  := -I/usr/include -O3 -Iincludes -Ilinux_mlx 
+DIR_SRCS	:= srcs
+FLAGS		:= -Wall -Werror -Wextra
+DIR_OBJS	:= objs
+DIR_INCS	:= includes
+DIR_LIBFT	:= libft
+DIR_PRINTF	:= ft_printf
+DIR_GNL		:= gnl
+FILE_INCS	:= so_long.h
 SRCS = $(addprefix $(DIR_SRCS)/,$(C_FILES))
 OBJS = $(addprefix $(DIR_OBJS)/,$(O_FILES))
-INCS = $(addprefix $(DIR_INCS)/,$(INCLUDES))
-C_FILES	:= main.c \
-O_FILES := $(C_FILES:.c=.o)
+INCS = $(addprefix $(DIR_INCS)/,$(FILE_INCS))
 LIBFT := $(DIR_LIBFT)/libft.a
-INCLUDES := mlx.h 
+PRINTF := $(DIR_PRINTF)/ft_printf.a
+GNL	:= $(DIR_GNL)/gnl.a
+O_FILES = $(C_FILES:.c=.o)
+C_FILES	:= so_long.c parsing.c error.c game.c \
 
-
+# ─── COLORS ─────────────────────────────────────────────────────────────────────
+	
 ERASE	=	\033[2K\r
 GREY	=	\033[30m
 RED		=	\033[31m
@@ -41,33 +47,45 @@ UNDER	=	\033[4m
 SUR		=	\033[7m
 END		=	\033[0m
 
+# ─── RULES ──────────────────────────────────────────────────────────────────────
+	
 all: $(EXEC) 
 
-$(EXEC): $(LIBFT) $(OBJS)
-#	echo creating executable	
-	$(CC) $(OBJS) -L$(DIR_MLX) -l$(DIR_MLX) $(MLX_FLAGS) -o $(EXEC)
+$(EXEC): $(LIBFT) $(GNL) $(PRINTF) $(OBJS) $(INCS)
+	$(AT) $(CC)  $(OBJS) $(LIBFT) $(PRINTF) $(GNL) $< -o $(EXEC) $(EXEC_FLAGS) 
 	@printf "$(ERASE)$(ERASE)$(BLUE)> Creating:$(BOLD)$(CYAN) $@ $(END)\n"
 
-$(DIR_OBJS)/%.o: $(DIR_SRCS)/%.c Makefile | $(DIR_OBJS)
-	$(CC) -Wall -Wextra -Werror -I$(DIR_MLX) -c $< -o $@
+$(DIR_OBJS)/%.o: $(DIR_SRCS)/%.c Makefile $(INCS) | $(DIR_OBJS)
+	$(AT) $(CC) $(FLAGS) $(OBJS_FLAGS) -c $< -o $@ 
 	@printf "$(ERASE)$(ERASE)$(BLUE)> Creating:$(RED) $@ $(END)\n"
 
 $(DIR_OBJS):
 	$(AT) mkdir -p $@ 
-$(LIBFT): libft/Makefile libft/srcs/* libft/includes/libft.h
+
+$(LIBFT): $(DIR_LIBFT)/Makefile $(DIR_LIBFT)/srcs/* $(DIR_LIBFT)/includes/libft.h
 	 $(AT) $(MAKE) -C $(DIR_LIBFT)
+
+$(PRINTF): $(DIR_PRINTF)/srcs/* $(DIR_PRINTF)/includes/ft_printf.h
+	 $(AT) $(MAKE) -C $(DIR_PRINTF)
+
+$(GNL): $(DIR_GNL)/Makefile $(DIR_GNL)/srcs/* $(DIR_GNL)/includes/get_next_line.h
+	 $(AT) $(MAKE) -C $(DIR_GNL)
 	
 clean:
 	@echo Removing object files
 	$(AT) $(MAKE) -C $(DIR_LIBFT) clean
+	$(AT) $(MAKE) -C $(DIR_GNL) clean
+	$(AT) $(MAKE) -C $(DIR_PRINTF) clean
 	$(AT)-rm -rf $(DIR_OBJS)	 
 fclean: clean
 	@echo Removing application
 	$(AT)-rm -f $(EXEC)
 	$(AT) $(MAKE) -C $(DIR_LIBFT) fclean
+	$(AT) $(MAKE) -C $(DIR_GNL) fclean
+	$(AT) $(MAKE) -C $(DIR_PRINTF) fclean
 	@printf "$(ERASE)$(ERASE)$(BLUE)> Deleted : $(RED)$(EXEC)$(END)\n"
 
 re: fclean all	
 
-.PHONY: all clean fclean
+.PHONY: all clean fclean ft_printf
 .DEFAULT: all

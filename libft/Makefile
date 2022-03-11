@@ -90,7 +90,6 @@ END		=	\033[0m
 all: $(LIBRARY) 
 
 $(LIBRARY): $(OBJS) $(SRCS)
-	@echo creating library	
 	$(AT)-ar -rcs $(LIBRARY) $(OBJS)
 	$(AT)-ranlib $(LIBRARY)
 	@printf "$(ERASE)$(ERASE)$(BLUE)> Creating:$(BOLD)$(CYAN) $@ $(END)\n"
