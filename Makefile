@@ -12,10 +12,12 @@ V_CC := @echo "Building $@..."; $(CC)
 AT := @
 CC := gcc
 EXEC		:= so_long
-EXEC_FLAGS	:= -Llinux_mlx/ -lmlx -L/usr/include/ -L/usr/lib  -lXext -lX11 -lm -lbsd
-OBJS_FLAGS  := -I/usr/include -O3 -Iincludes -Ilinux_mlx 
+EXEC_FLAGS_MAC := -Lmlx -lmlx -framework OpenGL -framework AppKit 
+OBJS_FLAGS_MAC := -Imlx -Iincludes 
+EXEC_FLAGS_LINUX := -Llinux_mlx/ -lmlx -L/usr/include/ -L/usr/lib  -lXext -lX11 -lm -lbsd
+OBJS_FLAGS_LINUX := -I/usr/include -O3 -Iincludes -Ilinux_mlx 
 DIR_SRCS	:= srcs
-FLAGS		:= -Wall -Werror -Wextra
+FLAGS		:= -g -Wall -Werror -Wextra
 DIR_OBJS	:= objs
 DIR_INCS	:= includes
 DIR_LIBFT	:= libft
@@ -50,11 +52,11 @@ END		=	\033[0m
 all: $(EXEC) 
 
 $(EXEC): $(LIBFT) $(GNL) $(OBJS) $(INCS)
-	$(AT) $(CC)  $(OBJS) $(LIBFT) $(PRINTF) $(GNL) $< -o $(EXEC) $(EXEC_FLAGS) 
+	$(AT) $(CC)  $(OBJS) $(LIBFT) $(PRINTF) $(GNL) $< -o $(EXEC) $(EXEC_FLAGS_MAC) 
 	@printf "$(ERASE)$(ERASE)$(BLUE)> Creating:$(BOLD)$(CYAN) $@ $(END)\n"
 
 $(DIR_OBJS)/%.o: $(DIR_SRCS)/%.c Makefile $(INCS) | $(DIR_OBJS)
-	$(AT) $(CC) $(FLAGS) $(OBJS_FLAGS) -c $< -o $@ 
+	$(AT) $(CC) $(FLAGS) $(OBJS_FLAGS_MAC) -c $< -o $@ 
 	@printf "$(ERASE)$(ERASE)$(BLUE)> Creating:$(RED) $@ $(END)\n"
 
 $(DIR_OBJS):

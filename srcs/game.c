@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvalenci <jvalenci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvalenci <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/07 11:01:37 by jvalenci          #+#    #+#             */
-/*   Updated: 2022/03/11 18:25:34 by jvalenci         ###   ########.fr       */
+/*   Created: 2022/03/17 13:18:25 by jvalenci          #+#    #+#             */
+/*   Updated: 2022/03/17 13:18:36 by jvalenci         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 /* it fetches up 'P' coordinates */
 void	ft_get_p(t_vars *map)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (i < map->lines)
@@ -24,7 +24,7 @@ void	ft_get_p(t_vars *map)
 		j = 0;
 		while (j < map->colums)
 		{
-			if ((map->map[i][j] == 'P'))
+			if (map->map[i][j] == 'P')
 			{
 				map->y_p = i;
 				map->x_p = j;
@@ -42,20 +42,24 @@ void	ft_get_p(t_vars *map)
 	collectables are gathered */
 void	ft_check_exit(t_vars *map, char action)
 {
-	char up = map->map[map->y_p - 1][map->x_p];
-	char down = map->map[map->y_p + 1][map->x_p];
-	char right = map->map[map->y_p][map->x_p + 1];
-	char left = map->map[map->y_p][map->x_p - 1];
+	char	up;
+	char	down;
+	char	right;
+	char	left;
 
+	up = map->map[map->y_p - 1][map->x_p];
+	down = map->map[map->y_p + 1][map->x_p];
+	right = map->map[map->y_p][map->x_p + 1];
+	left = map->map[map->y_p][map->x_p - 1];
 	if ((action == 'U' && up == 'E' && map->n_collectables == 0) || \
-	(action == 'D' && down == 'E' && map->n_collectables == 0) || \
-	(action == 'R' && right == 'E' && map->n_collectables == 0) || \
-	(action == 'L' && left == 'E' && map->n_collectables == 0))
+			(action == 'D' && down == 'E' && map->n_collectables == 0) || \
+			(action == 'R' && right == 'E' && map->n_collectables == 0) || \
+			(action == 'L' && left == 'E' && map->n_collectables == 0))
 		ft_close_window(map, 1);
 	if ((action == 'U' && up == 'E' && map->n_collectables > 0) || \
-	(action == 'D' && down == 'E' && map->n_collectables > 0) || \
-	(action == 'R' && right == 'E' && map->n_collectables > 0) || \
-	(action == 'L' && left == 'E' && map->n_collectables > 0))
+			(action == 'D' && down == 'E' && map->n_collectables > 0) || \
+			(action == 'R' && right == 'E' && map->n_collectables > 0) || \
+			(action == 'L' && left == 'E' && map->n_collectables > 0))
 		ft_print_error(7);
 	if ((up != 'E') && (down != 'E') && (right != 'E') && (left != 'E'))
 		map->mouv++;
@@ -117,13 +121,15 @@ void	ft_move_p(t_vars *map, int key)
 
 /*	Handles all possible movements taking into account events, 
 	and quit the programme if needed */
-int ft_events(int key, t_vars *vars)
+int	ft_events(int key, t_vars *vars)
 {
-    vars->n_players = 0;
-    vars->n_collectables = 0;
-    vars->n_exits = 0;
+	vars->n_players = 0;
+	vars->n_collectables = 0;
+	vars->n_exits = 0;
+	ft_putnbr_fd(key, 1);
+	ft_putstr_fd("\n", 1);
 	if (key == K_W || key == K_A || key == K_S || key == K_D || key == K_UP \
-	|| key == K_DOWN || key == K_LEFT || key == K_RIGHT)
+			|| key == K_DOWN || key == K_LEFT || key == K_RIGHT)
 	{
 		ft_move_p(vars, key);
 		ft_putstr_fd("movements: ", 1);

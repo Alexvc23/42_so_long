@@ -6,7 +6,7 @@
 /*   By: jvalenci <jvalenci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 11:07:04 by jvalenci          #+#    #+#             */
-/*   Updated: 2022/03/04 16:57:54 by jvalenci         ###   ########.fr       */
+/*   Updated: 2022/03/17 14:41:24 by jvalenci         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@
 # define K_K 40
 # define K_L 37
 
-
 //Keyboard Third Row
 // Z X C V B N M
 
@@ -71,33 +70,12 @@
 # define K_EQUAL 24
 # define K_TILDE 50
 
-// Keyboard Pav Num
-// 0 1 2 3 4 5 6 7 8 9 / * - + .
+// Arrows left up right down
+# define K_LEFT 123 
+# define K_UP 126 
+# define K_RIGHT 124    
+# define K_DOWN 125 
 
-# define PV_0 82
-# define PV_1 83
-# define PV_2 84
-# define PV_3 85
-# define PV_4 86
-# define PV_5 87
-# define PV_6 88
-# define PV_7 89
-# define PV_8 91
-# define PV_9 92
-# define PV_SLASH 75
-# define PV_STAR 67
-# define PV_MINUS 78
-# define PV_PLUS 69
-# define PV_ENT 76
-# define PV_POINT 65
-
-// Keyboard Weird Characters
-// [ ] \ ; ' , . /
-
-# define K_BRACKET1 33
-# define K_BRACKET2 30
-# define K_BACKSLASH 42
-# define K_PCOMMA 41
-# define K_QUOTE 39
-# define K_COMMA 43
+// ESK key
+# define K_ESC 53
 #endif
