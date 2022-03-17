@@ -6,7 +6,7 @@
 /*   By: jvalenci <jvalenci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 14:29:09 by jvalenci          #+#    #+#             */
-/*   Updated: 2022/03/17 14:43:27 by jvalenci         ###   ########.fr       */
+/*   Updated: 2022/03/17 14:48:13 by jvalenci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,4 @@ int	main(void)
 	mlx_hook(vars.win, 2, 1L << 0, ft_events, &vars);
 	mlx_hook(vars.win, 17, 0, ft_close_window, &vars);
 	vars.loop = mlx_loop(vars.mlx);
-	ft_free_map(&vars);
 }
