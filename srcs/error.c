@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvalenci <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jvalenci <jvalenci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 14:53:41 by jvalenci          #+#    #+#             */
-/*   Updated: 2022/03/17 14:53:43 by jvalenci         ###   ########lyon.fr   */
+/*   Updated: 2022/03/25 11:37:13 by jvalenci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	ft_check_errors(t_vars *map)
 	map->n_players = 0;
 	map->n_collectables = 0;
 	map->n_exits = 0;
-	if ((map->lines / map->colums) > 0.61)
+	if ((map->lines ==  map->colums) || map->lines < 3 || map->colums <3)
 		return (ft_print_error(1));
 	else if (!ft_check_char(map))
 		return (ft_print_error(2));
@@ -102,14 +102,14 @@ int	ft_print_error(int error)
 		return (write(1, "There must be a player in the map\n", 35));
 	else if (error == 4)
 		return (write(1, "There must be at least one collectable in the\
-map\n", 51));
+ map\n", 51));
 	else if (error == 5)
 		return (write(1, "There must be at least one exit in the\
-map\n", 43));
+ map\n", 43));
 	if (error == 6)
 		return (write(1, "The map must be sourranded by walls\n", 37));
 	if (error == 7)
 		return (write(1, "You must gather all collectables before exit the\
-game\n", 55));
+ game\n", 55));
 	return (0);
 }

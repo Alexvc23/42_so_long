@@ -3,24 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvalenci <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jvalenci <jvalenci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 14:35:05 by jvalenci          #+#    #+#             */
-/*   Updated: 2022/03/17 14:40:24 by jvalenci         ###   ########lyon.fr   */
+/*   Updated: 2022/03/25 11:28:59 by jvalenci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
+#if defined(__linux__)
+	#include "sl_keys_linux.h"
+#else
+	#include "sl_keys.h"
+#endif
 # define SO_LONG_H
 # define MAP_CHARS "01CEP"
-# define MAP "ber/sub1.ber"
 # define PLAYER "xpm/player.xpm"
 # define FLOOR "xpm/floor.xpm"
 # define WALL "xpm/wall.xpm"
 # define EXIT "xpm/door.xpm"
 # define COLLECTABLE "xpm/collectable.xpm"
 # include "mlx.h"
-# include "sl_keys.h"
 # include "../libft/includes/libft.h"
 # include "../gnl/includes/get_next_line.h"
 
@@ -51,7 +54,7 @@ typedef struct s_vars
 
 // ─── FUNCTIONS ─────────────────────────────────────
 
-int		ft_parce_map(t_vars *map);
+int		ft_parce_map(t_vars *map, char **argv);
 void	ft_free_map(t_vars *map);
 int		ft_check_char(t_vars *map);
 int		ft_check_errors(t_vars *map);

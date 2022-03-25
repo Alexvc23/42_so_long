@@ -11,11 +11,12 @@
 V_CC := @echo "Building $@..."; $(CC)
 AT := @
 CC := gcc
+CNAME := $(shell uname -s)
 EXEC		:= so_long
-EXEC_FLAGS_MAC := -Lmlx -lmlx -framework OpenGL -framework AppKit 
-OBJS_FLAGS_MAC := -Imlx -Iincludes 
-EXEC_FLAGS_LINUX := -Llinux_mlx/ -lmlx -L/usr/include/ -L/usr/lib  -lXext -lX11 -lm -lbsd
-OBJS_FLAGS_LINUX := -I/usr/include -O3 -Iincludes -Ilinux_mlx 
+EXEC_FLAGS_MAC = -Lmlx -lmlx -framework OpenGL -framework AppKit 
+OBJS_FLAGS_MAC = -Imlx -Iincludes 
+EXEC_FLAGS_LINUX := linux_mlx/libmlx.a -L/usr/include/ -L/usr/lib  -lXext -lX11 -lm -lbsd
+OBJS_FLAGS_LINUX := -I/usr/include -lmlx -O3 -Iincludes -Ilinux_mlx -Llinux_mlx
 DIR_SRCS	:= srcs
 FLAGS		:= -g -Wall -Werror -Wextra
 DIR_OBJS	:= objs
@@ -30,6 +31,13 @@ LIBFT := $(DIR_LIBFT)/libft.a
 GNL	:= $(DIR_GNL)/gnl.a
 O_FILES = $(C_FILES:.c=.o)
 C_FILES	:= so_long.c parsing.c error.c game.c \
+
+ifeq ($(CNAME), Linux)
+EXEC_FLAGS_MAC = $(EXEC_FLAGS_LINUX)
+OBJS_FLAGS_MAC = $(OBJS_FLAGS_LINUX)
+endif
+
+
 
 # ─── COLORS ─────────────────────────────────────────────────────────────────────
 	
@@ -49,10 +57,10 @@ END		=	\033[0m
 
 # ─── RULES ──────────────────────────────────────────────────────────────────────
 	
-all: $(EXEC) 
+all: libft gnl $(EXEC) 
 
 $(EXEC): $(LIBFT) $(GNL) $(OBJS) $(INCS)
-	$(AT) $(CC)  $(OBJS) $(LIBFT) $(PRINTF) $(GNL) $< -o $(EXEC) $(EXEC_FLAGS_MAC) 
+	$(AT) $(CC)  $(OBJS) $(LIBFT) $(GNL) $< -o $(EXEC) $(EXEC_FLAGS_MAC) 
 	@printf "$(ERASE)$(ERASE)$(BLUE)> Creating:$(BOLD)$(CYAN) $@ $(END)\n"
 
 $(DIR_OBJS)/%.o: $(DIR_SRCS)/%.c Makefile $(INCS) | $(DIR_OBJS)
@@ -62,14 +70,14 @@ $(DIR_OBJS)/%.o: $(DIR_SRCS)/%.c Makefile $(INCS) | $(DIR_OBJS)
 $(DIR_OBJS):
 	$(AT) mkdir -p $@ 
 
-$(LIBFT): $(DIR_LIBFT)/Makefile $(DIR_LIBFT)/srcs/* $(DIR_LIBFT)/includes/libft.h
-	 $(AT) $(MAKE) -C $(DIR_LIBFT)
+$(LIBFT):libft 
 
-$(PRINTF): $(DIR_PRINTF)/srcs/* $(DIR_PRINTF)/includes/ft_printf.h
-	 $(AT) $(MAKE) -C $(DIR_PRINTF)
+$(GNL):gnl
 
-$(GNL): $(DIR_GNL)/Makefile $(DIR_GNL)/srcs/* $(DIR_GNL)/includes/get_next_line.h
-	 $(AT) $(MAKE) -C $(DIR_GNL)
+libft:
+	$(AT) $(MAKE) -C $(DIR_LIBFT)
+gnl:
+	$(AT) $(MAKE) -C $(DIR_GNL)
 	
 clean:
 	@echo Removing object files
@@ -85,5 +93,5 @@ fclean: clean
 
 re: fclean all	
 
-.PHONY: all clean fclean
+.PHONY: all clean fclean libft gnl
 .DEFAULT: all

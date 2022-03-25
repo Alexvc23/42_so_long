@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvalenci <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jvalenci <jvalenci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 14:54:03 by jvalenci          #+#    #+#             */
-/*   Updated: 2022/03/17 14:54:06 by jvalenci         ###   ########lyon.fr   */
+/*   Updated: 2022/03/25 11:36:41 by jvalenci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,13 +105,16 @@ void	ft_push_img(t_vars *mlx)
 	}
 }
 
-int	main(void)
+int	main(int argc, char *argv[])
 {
 	t_vars	vars;
+	(void)argv;
 
 	vars.mouv = 0;
-	if (!ft_parce_map(&vars))
-		return (0);
+	if (argc != 2)
+		return (write(2, "Wrong number of arguments\n", 27));
+	if (ft_parce_map(&vars, argv) < 0)
+		return (write(2, "Error parsing the map\n", 23));
 	ft_set_window(&vars);
 	ft_push_img(&vars);
 	mlx_hook(vars.win, 2, 1L << 0, ft_events, &vars);
